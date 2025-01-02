@@ -6,7 +6,7 @@ pipeline {
             when {
                 expression {
                     // Vérifie si des fichiers dans le dossier "server" ont été modifiés
-                    sh(script: 'git diff --name-only HEAD~1 | grep "^server/"', returnStatus: true) == 0
+                    sh(script: 'git diff --name-only HEAD | grep "^server/"', returnStatus: true) == 0
                 }
             }
             steps {
@@ -18,7 +18,7 @@ pipeline {
             when {
                 expression {
                     // Vérifie si des fichiers dans le dossier "client" ont été modifiés
-                    sh(script: 'git diff --name-only HEAD~1 | grep "^client/"', returnStatus: true) == 0
+                    sh(script: 'git diff --name-only HEAD | grep "^client/"', returnStatus: true) == 0
                 }
             }
             steps {
@@ -35,6 +35,7 @@ pipeline {
             sh '''
             docker container prune -f
             docker image prune -f
+            docker volume prune -f  // Optionnel, pour nettoyer les volumes inutilisés
             '''
         }
     }
