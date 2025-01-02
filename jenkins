@@ -2,25 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Server') {
+            when {
+                expression {
+                    // Vérifie si des fichiers dans le dossier "server" ont été modifiés
+                    sh(script: 'git diff --name-only HEAD~1 | grep "^server/"', returnStatus: true) == 0
+                }
+            }
             steps {
-                echo 'Building project...'
-                // Exemple de commande pour construire une image Docker
-                sh 'docker build -t myapp .'
+                echo 'Building server...'
+                sh 'docker build -t myapp-server ./server'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                // Exemple de test
-                sh 'echo "Tests passed!"'
+        stage('Build Client') {
+            when {
+                expression {
+                    // Vérifie si des fichiers dans le dossier "client" ont été modifiés
+                    sh(script: 'git diff --name-only HEAD~1 | grep "^client/"', returnStatus: true) == 0
+                }
             }
-        }
-        stage('Deploy') {
             steps {
-                echo 'Deploying application...'
-                // Exemple de déploiement Docker
-                sh 'docker run -d -p 8080:8080 myapp'
+                echo 'Building client...'
+                sh 'docker build -t myapp-client ./client'
             }
         }
     }
@@ -28,7 +31,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker artifacts...'
-            // Supprime les conteneurs et images temporaires
+            // Nettoyage Docker
             sh '''
             docker container prune -f
             docker image prune -f
