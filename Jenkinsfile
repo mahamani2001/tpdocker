@@ -11,7 +11,7 @@ pipeline {
             }
             steps {
                 echo 'Building server...'
-                sh 'docker build -t mern-app-server ./server'
+                sh 'docker build -t mern-server ./server'
             }
         }
         stage('Build Client') {
@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 echo 'Building client...'
-                sh 'docker build -t mern-app-client ./client'
+                sh 'docker build -t mern-client ./client'
             }
         }
     }
