@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require("mongo");
 
 // Use the hostname of the MongoDB service in your Docker network.
 // Replace 'mongo' with the service name of your MongoDB container if it's different.
