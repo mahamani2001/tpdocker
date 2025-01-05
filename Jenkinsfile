@@ -5,8 +5,9 @@ pipeline {
         stage('Build Server') {
             when {
                 expression {
-                    // Vérifie si des fichiers dans le dossier "server" ont été modifiés
-                    sh(script: 'git diff --name-only HEAD | grep "^server/"', returnStatus: true) == 0
+                    def changedFiles = sh(script: 'git diff --name-only HEAD~1..HEAD | grep "^client/"', returnStdout: true).trim()
+                    echo "Changed files in client directory: ${changedFiles}"
+                    return changedFiles != ""
                 }
             }
             steps {
@@ -17,8 +18,9 @@ pipeline {
         stage('Build Client') {
             when {
                 expression {
-                    // Vérifie si des fichiers dans le dossier "client" ont été modifiés
-                    sh(script: 'git diff --name-only HEAD | grep "^client/"', returnStatus: true) == 0
+                    def changedFiles = sh(script: 'git diff --name-only HEAD~1..HEAD | grep "^client/"', returnStdout: true).trim()
+                    echo "Changed files in client directory: ${changedFiles}"
+                    return changedFiles != ""
                 }
             }
             steps {
