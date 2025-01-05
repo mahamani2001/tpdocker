@@ -109,7 +109,7 @@ export default function Edit() {
                             checked={form.level === "Junior"}
                             onChange={(e) => updateForm({ level: e.target.value })}
                         />
-                        <label htmlFor="positionJunior" className="form-check-label">test modification</label>
+                        <label htmlFor="positionJunior" className="form-check-label">Juniooor</label>
                     </div>
                     <div className="form-check form-check-inline">
                         <input
