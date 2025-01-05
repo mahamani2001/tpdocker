@@ -35,7 +35,7 @@ pipeline {
             sh '''
             docker container prune -f
             docker image prune -f
-            docker volume prune   // Optionnel, pour nettoyer les volumes inutilisés
+            docker volume prune -f
             '''
         }
     }
