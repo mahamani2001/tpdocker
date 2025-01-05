@@ -5,9 +5,10 @@ pipeline {
         stage('Build Server') {
             when {
                 expression {
-                    def changedFiles = sh(script: 'git diff --name-only HEAD~1..HEAD | grep "^client/"', returnStdout: true).trim()
-                    echo "Changed files in client directory: ${changedFiles}"
-                    return changedFiles != ""
+                    // Check for changes in the 'server/' directory
+                    def changedFiles = sh(script: 'git diff --name-only HEAD~1..HEAD | grep "^server/"', returnStdout: true).trim()
+                    echo "Changed files in server directory: ${changedFiles}"
+                    return changedFiles != ""  // Proceed if there are changes in the server directory
                 }
             }
             steps {
@@ -18,9 +19,10 @@ pipeline {
         stage('Build Client') {
             when {
                 expression {
+                    // Check for changes in the 'client/' directory
                     def changedFiles = sh(script: 'git diff --name-only HEAD~1..HEAD | grep "^client/"', returnStdout: true).trim()
                     echo "Changed files in client directory: ${changedFiles}"
-                    return changedFiles != ""
+                    return changedFiles != ""  // Proceed if there are changes in the client directory
                 }
             }
             steps {
@@ -33,11 +35,11 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker artifacts...'
-            // Nettoyage Docker
+            // Docker cleanup to remove unused containers, images, and volumes
             sh '''
             docker container prune -f
             docker image prune -f
-            docker volume prune 
+            docker volume prune -f
             '''
         }
     }
