@@ -6,8 +6,6 @@ services:
     container_name: mongodb
     networks:
       - mern-network
- 
-      
   server:
     build:
       context: ./server
